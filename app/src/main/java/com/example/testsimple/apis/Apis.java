@@ -1,4 +1,4 @@
-package com.example.testsimple;
+package com.example.testsimple.apis;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -30,6 +30,9 @@ public class Apis {
                stream = stringBuilder.toString();
                httpURLConnection.disconnect();
 
+           }
+           else if (httpURLConnection.getResponseCode()==401){
+               Toast.makeText(mContext, "error", Toast.LENGTH_SHORT).show();
            }
 
         } catch (MalformedURLException e) {

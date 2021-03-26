@@ -1,4 +1,4 @@
-package com.example.testsimple;
+package com.example.testsimple.models;
 
 public class Currently {
     private Integer time;

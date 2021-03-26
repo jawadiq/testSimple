@@ -1,7 +1,5 @@
 package com.example.testsimple.models;
 
-import com.example.testsimple.Currently;
-
 public class Main {
     double latitude ;
     double longitude;

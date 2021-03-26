@@ -17,29 +17,27 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.testsimple.apis.Apis;
+import com.example.testsimple.apis.Constans;
 import com.example.testsimple.models.Main;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.nio.channels.AsynchronousChannelGroup;
-import java.security.Provider;
 import java.util.List;
 import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
+    private static final String TAG = "MainActivity";
     double lat, lng;
     LocationManager locationManager;
     Location location;
     String provider;
     Main main = new Main();
     int permissions = 0;
-    TextView adress,weather;
+    TextView adress,weather,cityReg;
     Geocoder geocoder;
 
     @Override
@@ -48,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         setContentView(R.layout.activity_main);
         adress = findViewById(R.id.addRess);
         weather = findViewById(R.id.weather);
+        cityReg=findViewById(R.id.cityReg);
         locationManager = (LocationManager) getSystemService(this.LOCATION_SERVICE);
         provider = locationManager.getBestProvider(new Criteria(), false);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -84,6 +83,7 @@ Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.INTERNET
         lng = location.getLongitude();
         adress.append(String.valueOf(lat)+String.valueOf(lng));
         new GetWeather().execute(Constans.apiRequest(String.valueOf(lat),String.valueOf(lng)));
+//        new GetWeather().execute(Constans.apiRequest(String.valueOf(35.5252),String.valueOf(18.1515)));
 
         geocoder = new Geocoder(this, Locale.getDefault());
 
@@ -91,9 +91,7 @@ Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.INTERNET
             List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
             if (addresses.size() > 0) {
                 String address = addresses.get(0).getAddressLine(0);
-                adress.append(System.getProperty("line.separator"));
-                adress.append(address);
-
+                adress.setText(address);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -142,8 +140,26 @@ Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.INTERNET
             Type type = new TypeToken<Main>() {
             }.getType();
             main = gson.fromJson(s, type);
-            weather.setText(main.getTimezone());
-
+            cityReg.setText(main.getTimezone());
+            weather.append("Time: "+Constans.unitTimeToDate(main.getCurrently().getTime()));
+            weather.append(System.getProperty("line.separator"));
+            weather.append("Summary:"+main.getCurrently().getSummary());
+            weather.append(System.getProperty("line.separator"));
+            weather.append("Image: "+main.getCurrently().getIcon());//.... To be Converted to image
+            weather.append(System.getProperty("line.separator"));
+            weather.append("Precep Intensity: "+main.getCurrently().getPrecipIntensity().toString());
+            weather.append(System.getProperty("line.separator"));
+            weather.append("Probability :"+main.getCurrently().getPrecipProbability().toString());
+            weather.append(System.getProperty("line.separator"));
+            weather.append("Temprature: "+main.getCurrently().getTemperature().toString());
+            weather.append(System.getProperty("line.separator"));
+            weather.append("App Temprature: "+main.getCurrently().getApparentTemperature().toString());
+            weather.append(System.getProperty("line.separator"));
+            weather.append("Dew Point: "+main.getCurrently().getDewPoint().toString());
+            weather.append(System.getProperty("line.separator"));
+            weather.append("Humidity: "+main.getCurrently().getHumidity().toString());
+            weather.append(System.getProperty("line.separator"));
+            weather.append("Ozone: "+main.getCurrently().getOzone().toString());
         }
     }
 
