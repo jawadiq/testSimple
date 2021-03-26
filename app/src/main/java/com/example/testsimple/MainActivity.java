@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Criteria;
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         adress = findViewById(R.id.addRess);
         weather = findViewById(R.id.weather);
         cityReg=findViewById(R.id.cityReg);
-        locationManager = (LocationManager) getSystemService(this.LOCATION_SERVICE);
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         provider = locationManager.getBestProvider(new Criteria(), false);
 //
 
