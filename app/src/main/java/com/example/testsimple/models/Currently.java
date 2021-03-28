@@ -33,7 +33,7 @@ public class Currently {
 
     private Integer uvIndex;
 
-    private Integer visibility;
+    private double visibility;
 
     private Double ozone;
 
@@ -165,7 +165,7 @@ public class Currently {
         this.uvIndex = uvIndex;
     }
 
-    public Integer getVisibility() {
+    public double getVisibility() {
         return visibility;
     }
 
